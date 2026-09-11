@@ -5,7 +5,7 @@
 1. Register the lab's samples, test protocols and equipment before enabling
    the actor for that lab.
 2. Define consent and chain-of-custody categories for sample provenance.
-3. Run synthetic operating cases (`clojure -M:test`).
+3. Run synthetic operating cases (`kbb -M:test`).
 4. Enable human-reviewed sign-off for out-of-spec flags and low-confidence
    proposals.
 5. Measure operating outcomes and audit coverage.
