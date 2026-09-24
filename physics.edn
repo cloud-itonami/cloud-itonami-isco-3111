@@ -1,0 +1,30 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": lab automation runs test protocols, sample
+;; analysis and equipment calibration for chemical and physical science
+;; technicians (ISCO 3111). Its physical work is loading sample racks into an
+;; analyser, and running a proof-load tensile check on a steel specimen.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-3111"
+ :cases
+ [{:id :sample-rack-into-analyser
+   :kind :manipulator
+   :procedure "arm lifts a filled sample-tube rack from the bench and places it in the analyser loading bay"
+   :params {:l1-m 0.40 :l2-m 0.35 :m1-kg 3.0 :m2-kg 2.0
+            :from [0.50 0.05] :to [0.20 0.45] :duration-s 2.0 :steps 400}
+   :sweep {:param :payload-kg :values [0.3 0.8 1.5 2.5 4.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 30.0 :basis "estimate: continuous shoulder torque of a benchtop lab-automation arm (~3 kg payload class)"}
+   :boundary {:lo 0.1 :hi 20.0}}
+  {:id :steel-specimen-proof-load
+   :kind :material
+   :procedure "tensile machine ramps a proof load on a 100 mm, 100 mm2 steel specimen (yield 250 MPa)"
+   :params {}
+   :sweep {:param :max-force-n :values [10000.0 15000.0 20000.0 25000.0 30000.0]}
+   :quantity :final-strain
+   :limit {:max 0.002 :basis "estimate: 0.2 % strain, the offset used for proof strength Rp0.2 in metallic tensile testing, taken as the proof-load acceptance line"}
+   :boundary {:lo 5000.0 :hi 40000.0}}]}
